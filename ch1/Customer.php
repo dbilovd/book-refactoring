@@ -28,18 +28,8 @@ class Customer
 		return $this->name;
 	}
 
-	public function statement () {
-		return (new StatementStrategyContext('text'))
-			->statement($this);
-	}
-
-	public function htmlStatement () {
-		return (new StatementStrategyContext('html'))
-			->statement($this);
-	}
-
-	public function jsonStatement () {
-		return (new StatementStrategyContext('json'))
+	public function statement ($format = '') {
+		return (new StatementStrategyContext($format))
 			->statement($this);
 	}
 

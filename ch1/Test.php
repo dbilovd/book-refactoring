@@ -24,14 +24,17 @@ class Test extends TestCase
 	function testCustomerGeneratedSummary ()
 	{
 		$expectedStatement = "Rental Record for David\nAquaman\t42\nTitanic\t9.5\nAmount owed is 51.5\nYou earned 3 frequent renter points";
+		
 		$statement = $this->customer->statement();
+		$this->assertEquals($statement, $expectedStatement);
 
+		$statement = $this->customer->statement('text');
 		$this->assertEquals($statement, $expectedStatement);
 	}
 
 	function testCustomerGeneratedSummaryHTML ()
 	{
-		$statement = $this->customer->htmlStatement();
+		$statement = $this->customer->statement('html');
 
 		$this->assertRegexp('/Rental Record for David/', $statement);
 		$this->assertRegexp('/Aquaman 42/', $statement);
@@ -42,7 +45,7 @@ class Test extends TestCase
 
 	function testCustomerGeneratedSummaryJson ()
 	{
-		$statement = $this->customer->jsonStatement();
+		$statement = $this->customer->statement('json');
 
 		$expected = json_encode([
 			'title'			=> 'Rental Record for David',
