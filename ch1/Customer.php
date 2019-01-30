@@ -1,6 +1,8 @@
 <?php
 
 require_once("Movie.php");
+require_once("HTMLStatement.php");
+require_once("TextStatement.php");
 
 class Customer
 {
@@ -17,44 +19,31 @@ class Customer
 		$this->rentals[] = $rental;
 	}
 
+	public function getRentals ()
+	{
+		return $this->rentals;
+	}
+
 	public function getName ()
 	{
 		return $this->name;
 	}
 
 	public function statement () {
-		$result = "Rental Record for {$this->getName()}\n";
-
-		foreach ($this->rentals as $rental) {
-			$result .= "{$rental->getMovie()->getTitle()}\t{$rental->getCharge()}\n";
-		}
-
-		$result .= "Amount owed is {$this->charge()}\n";
-		$result .= "You earned {$this->renterPoints()} frequent renter points";
-
-		return $result;
+		return (new TextStatement())->statement($this);
 	}
 
 	public function htmlStatement () {
-		$result = "<h1>Rental Record for {$this->getName()}</h1>";
-
-		foreach ($this->rentals as $rental) {
-			$result .= "<p>{$rental->getMovie()->getTitle()} {$rental->getCharge()}</p>";
-		}
-
-		$result .= "<h2>Amount owed is {$this->charge()}</h2>";
-		$result .= "<h2>You earned {$this->renterPoints()} frequent renter points</h2>";
-
-		return $result;
+		return (new HTMLStatement())->statement($this);
 	}
 
-	private function charge () {
+	public function charge () {
 		return array_reduce($this->rentals, function ($a, $rental) {
 			return $a + $rental->getCharge();
 		}, 0);
 	}
 
-	private function renterPoints ()
+	public function renterPoints ()
 	{
 		return array_reduce($this->rentals, function ($a, $rental) {
 			return $a + $rental->getFrequencyRenterPoints();
