@@ -2,6 +2,7 @@
 
 require_once("Movie.php");
 require_once("HTMLStatement.php");
+require_once("JsonStatement.php");
 require_once("TextStatement.php");
 
 class Customer
@@ -35,6 +36,10 @@ class Customer
 
 	public function htmlStatement () {
 		return (new HTMLStatement())->statement($this);
+	}
+
+	public function jsonStatement () {
+		return (new JsonStatement())->statement($this);
 	}
 
 	public function charge () {

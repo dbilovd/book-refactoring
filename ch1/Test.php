@@ -39,4 +39,26 @@ class Test extends TestCase
 		$this->assertRegexp('/Amount owed is 51\.5/', $statement);
 		$this->assertRegexp('/You earned 3 frequent renter points/', $statement);
 	}
+
+	function testCustomerGeneratedSummaryJson ()
+	{
+		$statement = $this->customer->jsonStatement();
+
+		$expected = json_encode([
+			'title'			=> 'Rental Record for David',
+			'rentals'		=> [
+				[
+					'title'	=> 'Aquaman',
+					'price'	=> 42
+				], [
+					'title'	=> 'Titanic',
+					'price'	=> 9.5
+				]
+			],
+			'total'			=> 51.5,
+			'renterPoints'	=> 3
+		]);
+
+		$this->assertJsonStringEqualsJsonString($statement, $expected);
+	}
 }
