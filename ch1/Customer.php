@@ -1,9 +1,7 @@
 <?php
 
 require_once("Movie.php");
-require_once("HTMLStatement.php");
-require_once("JsonStatement.php");
-require_once("TextStatement.php");
+require_once("StatementStrategyContext.php");
 
 class Customer
 {
@@ -31,15 +29,18 @@ class Customer
 	}
 
 	public function statement () {
-		return (new TextStatement())->statement($this);
+		return (new StatementStrategyContext('text'))
+			->statement($this);
 	}
 
 	public function htmlStatement () {
-		return (new HTMLStatement())->statement($this);
+		return (new StatementStrategyContext('html'))
+			->statement($this);
 	}
 
 	public function jsonStatement () {
-		return (new JsonStatement())->statement($this);
+		return (new StatementStrategyContext('json'))
+			->statement($this);
 	}
 
 	public function charge () {
