@@ -43,6 +43,39 @@ class Test extends TestCase
 		$this->assertRegexp('/You earned 3 frequent renter points/', $statement);
 	}
 
+	function testDepricatedCustomerGeneratedSummaryHTML ()
+	{
+		$statement = $this->customer->htmlStatement();
+
+		$this->assertRegexp('/Rental Record for David/', $statement);
+		$this->assertRegexp('/Aquaman 42/', $statement);
+		$this->assertRegexp('/Titanic 9\.5/', $statement);
+		$this->assertRegexp('/Amount owed is 51\.5/', $statement);
+		$this->assertRegexp('/You earned 3 frequent renter points/', $statement);
+	}
+
+	function testDeprecatedCustomerGeneratedSummaryJson ()
+	{
+		$statement = $this->customer->jsonStatement();
+
+		$expected = json_encode([
+			'title'			=> 'Rental Record for David',
+			'rentals'		=> [
+				[
+					'title'	=> 'Aquaman',
+					'price'	=> 42
+				], [
+					'title'	=> 'Titanic',
+					'price'	=> 9.5
+				]
+			],
+			'total'			=> 51.5,
+			'renterPoints'	=> 3
+		]);
+
+		$this->assertJsonStringEqualsJsonString($statement, $expected);
+	}
+
 	function testCustomerGeneratedSummaryJson ()
 	{
 		$statement = $this->customer->statement('json');

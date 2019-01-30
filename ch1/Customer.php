@@ -33,6 +33,22 @@ class Customer
 			->statement($this);
 	}
 
+	/**
+	 * @deprecated use statement('html') instead
+	 */
+	public function htmlStatement () {
+		return (new StatementStrategyContext('html'))
+			->statement($this);
+	}
+
+	/**
+	 * @deprecated use statement('json') instead
+	 */
+	public function jsonStatement () {
+		return (new StatementStrategyContext('json'))
+			->statement($this);
+	}
+
 	public function charge () {
 		return array_reduce($this->rentals, function ($a, $rental) {
 			return $a + $rental->getCharge();
